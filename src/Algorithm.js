@@ -7,11 +7,16 @@ export default class Algorithm extends Component {
   state = {
     array: [],
     arraySize: 50,
+    buttonsEnabled: false,
   };
 
   componentDidMount() {
     this.generateArray();
   }
+
+  disableButtons = () => {
+		this.setState({buttonsEnabled: true})
+	};
 
   randNum = () => {
     return Math.floor(Math.random() * 100) + 1;
@@ -22,7 +27,10 @@ export default class Algorithm extends Component {
     for (let i = 0; i < this.state.arraySize; i++) {
       temp.push(this.randNum());
     }
-    this.setState({ array: temp });
+    this.setState({ 
+			array: temp,
+			buttonsEnabled: false 
+		});
   };
 
   swapAnimation = (animations) => {
@@ -30,7 +38,6 @@ export default class Algorithm extends Component {
       const one = animations[j][0];
       const two = animations[j][1];
       let bars = document.getElementsByClassName("algorithmBar");
-
 
       if (j % 2 === 0) {
         setTimeout(() => {
@@ -53,19 +60,19 @@ export default class Algorithm extends Component {
     }
   };
 
-	partition = (arr, l ,h) => {
-    let animations = []
+  partition = (arr, l, h) => {
+    let animations = [];
     let pivot = arr[h];
-    let i = (l);
+    let i = l;
 
-    for (let j = l; j < h ; j++) {
-        if (arr[j] <= pivot){
-            animations.push([j, i]);
-            animations.push([j, i]);
-            [arr[i], arr[j]] = [arr[j], arr[i]];
+    for (let j = l; j < h; j++) {
+      if (arr[j] <= pivot) {
+        animations.push([j, i]);
+        animations.push([j, i]);
+        [arr[i], arr[j]] = [arr[j], arr[i]];
 
-            i++;
-        }
+        i++;
+      }
     }
 
     animations.push([h, i]);
@@ -73,9 +80,10 @@ export default class Algorithm extends Component {
     [arr[i], arr[h]] = [arr[h], arr[i]];
 
     return [i, animations];
-}
+  };
 
   insertionSort = () => {
+		this.disableButtons();
     let temp = [...this.state.array];
     let animations = [];
 
@@ -96,6 +104,7 @@ export default class Algorithm extends Component {
   };
 
   bubbleSort = () => {
+		this.disableButtons();
     let temp = [...this.state.array];
     let animations = [];
 
@@ -114,6 +123,8 @@ export default class Algorithm extends Component {
   };
 
   heapSort = () => {
+		this.disableButtons();
+
     let animations = [];
 
     let arr = [...this.state.array];
@@ -165,34 +176,35 @@ export default class Algorithm extends Component {
   };
 
   quicksort = () => {
-		let arr = [...this.state.array];
+		this.disableButtons();
+    let arr = [...this.state.array];
     let animations = [];
-		
+
     let stack = [];
 
     let start = 0;
     let end = arr.length - 1;
 
-    stack.push({x: start, y: end})
+    stack.push({ x: start, y: end });
 
-    while(stack.length){
-        const { x, y } = stack.shift();
-        
-        let pivot = this.partition(arr, x, y);
+    while (stack.length) {
+      const { x, y } = stack.shift();
 
-				animations = [...animations, ...pivot[1]];
+      let pivot = this.partition(arr, x, y);
 
-        if(pivot[0] - 1 > x){
-            stack.push({x: x, y: pivot[0] - 1});
-        }
+      animations = [...animations, ...pivot[1]];
 
-        if(pivot[0] + 1 < y){
-            stack.push({x: pivot[0] + 1, y: y});
-        }
+      if (pivot[0] - 1 > x) {
+        stack.push({ x: x, y: pivot[0] - 1 });
+      }
+
+      if (pivot[0] + 1 < y) {
+        stack.push({ x: pivot[0] + 1, y: y });
+      }
     }
 
-		this.swapAnimation(animations);
-}
+    this.swapAnimation(animations);
+  };
   render() {
     return (
       <div className="mainContainer">
@@ -220,6 +232,8 @@ export default class Algorithm extends Component {
             variant="outline-dark"
             onClick={() => this.heapSort()}
             style={{ marginRight: 10 }}
+            className="dis" 
+						disabled={this.state.buttonsEnabled}
           >
             Heap Sort
           </Button>
@@ -227,6 +241,8 @@ export default class Algorithm extends Component {
             variant="outline-dark"
             onClick={() => this.bubbleSort()}
             style={{ marginRight: 10 }}
+            className="dis"
+						disabled={this.state.buttonsEnabled}
           >
             Bubble Sort
           </Button>
@@ -234,10 +250,17 @@ export default class Algorithm extends Component {
             variant="outline-dark"
             onClick={() => this.insertionSort()}
             style={{ marginRight: 10 }}
+            className="dis"
+						disabled={this.state.buttonsEnabled}
           >
             Insertion Sort
           </Button>
-          <Button variant="outline-dark" onClick={() => this.quicksort()}>
+          <Button
+            variant="outline-dark"
+            className="dis"
+            onClick={() => this.quicksort()}
+						disabled={this.state.buttonsEnabled}
+          >
             Quick Sort
           </Button>
         </div>

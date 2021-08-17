@@ -1,55 +1,70 @@
-const quicksort = (arr) => {
-    let animations = [];
 
-    let stack = [];
+const mergeSort = (arr) => {
+    let n = arr.length;
+    let c_size;
+    let l_start;
 
-    let start = 0;
-    let end = arr.length - 1;
-
-    stack.push({x: start, y: end})
-
-    while(stack.length){
-        const { x, y } = stack.shift();
+    for (c_size = 1; c_size <= n - 1; c_size = 2 * c_size) {
+        for (l_start = 0; l_start < n - 1; l_start += 2 * c_size) {
+            let mid = l_start + c_size - 1;
+            let r_end = Math.min(l_start + 2 * c_size - 1, n - 1);
+            
+            merge(arr, l_start, mid, r_end)
+        }
         
-        let pivot = partition(arr, x, y);
-
-        if(pivot[0] - 1 > x){
-            stack.push({x: x, y: pivot[0] - 1});
-        }
-
-        if(pivot[0] + 1 < y){
-            stack.push({x: pivot[0] + 1, y: y});
-        }
     }
 }
 
-const partition = (arr, l ,h) => {
-    let animations = []
-    let pivot = arr[h];
-    let i = (l);
+const merge = (arr, l, m, r) => {
+    let i, j, k;
+    let n1 = m - l + 1;
+    let n2 = r - m;
 
-    for (let j = l; j < h ; j++) {
-        if (arr[j] <= pivot){
-            animations.push([arr[j], arr[i]]);
-            animations.push([arr[j], arr[i]]);
-            [arr[i], arr[j]] = [arr[j], arr[i]];
+    let L = [];
+    let R = [];
 
-            i++;
-        }
+    for (i = 0; i < n1; i++) {
+        L[i] = arr[l + i];
     }
 
-    animations.push([arr[h], arr[i]]);
-    animations.push([arr[h], arr[i]]);
-    [arr[i], arr[h]] = [arr[h], arr[i]];
+    for (j = 0; j < n2; j++) {
+        R[j] = arr[m + 1 + j];
+    }
 
-    return [i, animations];
+    i = 0;
+    j = 0;
+    k = l;
+
+    while (i < n1 && j < n2){
+        if(L[i] <= R[j]){
+            arr[k] = L[i];
+            i++;
+        }
+        else{
+            arr[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < n1){
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+
+    while (j < n2){
+        arr[k] = R[j];
+        j++;
+        k++;
+    }
 }
 
 let numbers = []
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 90; i++) {
   numbers.push(Math.floor(Math.random() * 100) + 1);
 }
 
 console.log(numbers)
-quicksort(numbers, 0, numbers.length)
+mergeSort(numbers)
 console.log(numbers)
