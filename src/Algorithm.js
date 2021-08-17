@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Button } from "react-bootstrap";
 
-const ANIMATION_SPEED = 100;
+const ANIMATION_SPEED = 25;
 
 export default class Algorithm extends Component {
   state = {
@@ -31,6 +31,7 @@ export default class Algorithm extends Component {
       const two = animations[j][1];
       let bars = document.getElementsByClassName("algorithmBar");
 
+
       if (j % 2 === 0) {
         setTimeout(() => {
           bars[one].style.backgroundColor = "red";
@@ -51,6 +52,28 @@ export default class Algorithm extends Component {
       }
     }
   };
+
+	partition = (arr, l ,h) => {
+    let animations = []
+    let pivot = arr[h];
+    let i = (l);
+
+    for (let j = l; j < h ; j++) {
+        if (arr[j] <= pivot){
+            animations.push([j, i]);
+            animations.push([j, i]);
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+
+            i++;
+        }
+    }
+
+    animations.push([h, i]);
+    animations.push([h, i]);
+    [arr[i], arr[h]] = [arr[h], arr[i]];
+
+    return [i, animations];
+}
 
   insertionSort = () => {
     let temp = [...this.state.array];
@@ -141,7 +164,35 @@ export default class Algorithm extends Component {
     this.swapAnimation(animations);
   };
 
-  
+  quicksort = () => {
+		let arr = [...this.state.array];
+    let animations = [];
+		
+    let stack = [];
+
+    let start = 0;
+    let end = arr.length - 1;
+
+    stack.push({x: start, y: end})
+
+    while(stack.length){
+        const { x, y } = stack.shift();
+        
+        let pivot = this.partition(arr, x, y);
+
+				animations = [...animations, ...pivot[1]];
+
+        if(pivot[0] - 1 > x){
+            stack.push({x: x, y: pivot[0] - 1});
+        }
+
+        if(pivot[0] + 1 < y){
+            stack.push({x: pivot[0] + 1, y: y});
+        }
+    }
+
+		this.swapAnimation(animations);
+}
   render() {
     return (
       <div className="mainContainer">
