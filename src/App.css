@@ -32,3 +32,14 @@ html {
   justify-content: center;
   flex-direction: column;
 }
+
+.custom-input {
+  margin-right: 10px;
+  margin-top: 20px;
+}
+
+.custom-input:hover{
+  color: #212529 !important;
+  background-color: #ffff !important;
+
+}

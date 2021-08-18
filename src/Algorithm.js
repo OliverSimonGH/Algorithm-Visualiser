@@ -17,6 +17,7 @@ export default class Algorithm extends Component {
     array: [],
     arraySize: 200,
     buttonsEnabled: false,
+    timeouts: []
   };
 
   componentDidMount() {
@@ -109,7 +110,6 @@ export default class Algorithm extends Component {
     let animations = mergeSortAnimations(arr);
 
     this.swapAnimation(animations, (an) => {
-     
       for (let j = 0; j < an.length; j++) {
         const one = an[j][0];
         const two = an[j][1];
@@ -117,34 +117,48 @@ export default class Algorithm extends Component {
 
         let bars = document.getElementsByClassName("algorithmBar");
 
-          if (ANIMATION_TYPE.RED === anType){
-            setTimeout(() => {
-              bars[one].style.backgroundColor = "red";
-              bars[two].style.backgroundColor = "red";
-            }, j * ANIMATION_SPEED);
-          }
-          else if (ANIMATION_TYPE.BLACK === anType) {
-            setTimeout(() => {
-              bars[one].style.backgroundColor = "black";
-              bars[two].style.backgroundColor = "black";
-            }, j * ANIMATION_SPEED);
-          } else {
-            setTimeout(() => {
-              let new_temp = [...this.state.array];
-              new_temp[one] = two;
-              this.setState({ array: new_temp });
-
-            }, j * ANIMATION_SPEED);
-      }
+        if (ANIMATION_TYPE.RED === anType) {
+          setTimeout(() => {
+            bars[one].style.backgroundColor = "red";
+            bars[two].style.backgroundColor = "red";
+          }, j * ANIMATION_SPEED);
+        } else if (ANIMATION_TYPE.BLACK === anType) {
+          setTimeout(() => {
+            bars[one].style.backgroundColor = "black";
+            bars[two].style.backgroundColor = "black";
+          }, j * ANIMATION_SPEED);
+        } else {
+          setTimeout(() => {
+            let new_temp = [...this.state.array];
+            new_temp[one] = two;
+            this.setState({ array: new_temp });
+          }, j * ANIMATION_SPEED);
+        }
       }
     });
   };
+
+  inputChange = (value) => {
+    let temp = value;
+    if (value < 10){
+      temp = 10;
+    }
+    else if (value > 200){
+      temp = 200;
+    }
+
+    this.setState({
+      arraySize: temp
+    })
+
+    this.generateArray()
+  }
 
   render() {
     return (
       <div className="mainContainer">
         <div className="algorithmContainer">
-          {this.state.array.map((bar, key) => {
+          {this.state.arraySize && this.state.array.map((bar, key) => {
             return (
               <div
                 className="algorithmBar"
@@ -156,13 +170,7 @@ export default class Algorithm extends Component {
           })}
         </div>
         <div className="algorithmButtons">
-          <Button
-            variant="outline-dark"
-            onClick={() => this.generateArray()}
-            style={{ marginRight: 10 }}
-          >
-            Generate Array
-          </Button>
+          <div>
           <Button
             variant="outline-dark"
             onClick={() => this.heapSort()}
@@ -207,6 +215,17 @@ export default class Algorithm extends Component {
           >
             Merge Sort
           </Button>
+          </div>
+          <div>
+          <Button
+            variant="outline-dark"
+            onClick={() => this.generateArray()}
+            style={{ marginRight: 10, marginTop: 20}}
+          >
+            Generate Array
+          </Button>
+          <input type="number" class="btn btn-outline-dark custom-input" placeholder={this.state.arraySize} value={this.state.arraySize} onChange={(e) => this.inputChange(e.target.value)}></input>
+          </div>
         </div>
       </div>
     );
