@@ -6,11 +6,8 @@ import Algorithm from "./Algorithm";
 export default class Main extends Component {
   state = {
     alogirthms: [
-        "Merge Sort",
-        "Quick Sort",
-        "Heap Sort",
-        "Bubble Sort",
-        "Insertion Sort"
+        "Sorting",
+        "Path Finding"
     ],
     selectedAlgorithm: null
   };

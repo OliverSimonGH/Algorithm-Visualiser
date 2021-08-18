@@ -1,3 +1,10 @@
+const ANIMATION_TYPE = {
+  PIVOT: "PIVOT",
+  SWAP: "SWAP",
+  RED: "RED",
+  BLACK: "BLACK"
+}
+
 const partition = (arr, l, h) => {
   let animations = [];
   let pivot = arr[h];
@@ -133,9 +140,64 @@ const quickSortAnimations = (arr) => {
   return animations;
 };
 
+const mergeSortAnimations = (arr) => {
+  let animations = [];
+  let aux = arr.slice();
+
+  mergeSort(arr, 0, arr.length - 1, aux, animations);
+
+  return animations
+}
+
+const mergeSort = (arr, s, e, aux, animations) => {
+   if (s === e) return;
+   let m = Math.floor((s + e) / 2);
+   mergeSort(aux, s, m, arr ,animations);
+   mergeSort(aux, m + 1, e, arr ,animations)
+   merge(arr, s, m, e, aux, animations)
+}
+
+const merge = (arr, s, m, e, aux, animations) => {
+  let i = s;
+  let k = s;
+  let j = m + 1;
+ 
+
+  while (i <= m && j <= e) {
+   animations.push([i, j, ANIMATION_TYPE.RED]);
+   animations.push([i, j, ANIMATION_TYPE.BLACK]);
+
+   if (aux[i] <= aux[j]) {
+     animations.push([k, aux[i], ANIMATION_TYPE.SWAP]);
+
+     arr[k++] = aux[i++];
+   } else {
+     animations.push([k, aux[j], ANIMATION_TYPE.SWAP]);
+
+     arr[k++] = aux[j++];
+   }
+ }
+ while (i <= m) {
+   animations.push([i, i, ANIMATION_TYPE.RED]);
+   animations.push([i, i, ANIMATION_TYPE.BLACK]);
+   animations.push([k, aux[i], ANIMATION_TYPE.SWAP]);
+
+   arr[k++] = aux[i++];
+ }
+ while (j <= e) {
+   animations.push([j, j, ANIMATION_TYPE.RED]);
+   animations.push([j, j, ANIMATION_TYPE.BLACK]);
+   animations.push([k, aux[j], ANIMATION_TYPE.SWAP]);
+
+   arr[k++] = aux[j++];
+ }
+}
+
 module.exports = {
   insertionSortAnimations,
   bubbleSortAnimations,
   heapSortAnimations,
-  quickSortAnimations
+  quickSortAnimations,
+  mergeSortAnimations,
+  ANIMATION_TYPE
 };
