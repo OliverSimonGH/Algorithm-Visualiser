@@ -61,7 +61,7 @@ const merge = (arr, l, m, r) => {
 }
 
 let numbers = []
-for (let i = 0; i < 90; i++) {
+for (let i = 0; i < 50; i++) {
   numbers.push(Math.floor(Math.random() * 100) + 1);
 }
 
