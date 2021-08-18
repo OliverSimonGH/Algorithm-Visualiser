@@ -1,3 +1,4 @@
+import { resolve } from "q";
 import React, { Component } from "react";
 import { Button } from "react-bootstrap";
 
@@ -10,12 +11,12 @@ import {
   ANIMATION_TYPE,
 } from "./Animations";
 
-const ANIMATION_SPEED = 20;
+const ANIMATION_SPEED = 3;
 
 export default class Algorithm extends Component {
   state = {
     array: [],
-    arraySize: 200,
+    arraySize: 50,
     buttonsEnabled: false,
     timeouts: []
   };
@@ -24,8 +25,19 @@ export default class Algorithm extends Component {
     this.generateArray();
   }
 
-  disableButtons = () => {
+  disableButtons = (val) => {
     this.setState({ buttonsEnabled: true });
+
+    if(val > 0){
+      new Promise((res, rej) => {
+        setTimeout(() => {
+          res()
+        }, val);
+      })
+      .then(() => {
+        this.setState({ buttonsEnabled: false });
+      })
+    } 
   };
 
   randNum = () => {
@@ -34,16 +46,35 @@ export default class Algorithm extends Component {
 
   generateArray = () => {
     let temp = [];
-    for (let i = 0; i < this.state.arraySize; i++) {
+    let arrSize = this.state.arraySize;
+
+    if(arrSize < 10) arrSize = 10;
+    else if(arrSize > 200) arrSize = 200;
+
+    for (let i = 0; i < arrSize; i++) {
       temp.push(this.randNum());
     }
+    
     this.setState({
       array: temp,
+      arraySize: arrSize,
       buttonsEnabled: false,
     });
   };
 
+  timeout = (fn, interval) => {
+    var id = setTimeout(fn, interval);
+    this.cleared = false;
+    this.clear = function () {
+        this.cleared = true;
+        clearTimeout(id);
+    };
+}
+
   swapAnimation = (animations, callback = null) => {
+    let disableButtonLength = animations.length * ANIMATION_SPEED;
+    this.disableButtons(disableButtonLength)
+
     if (callback === null) {
       for (let j = 0; j < animations.length; j++) {
         const one = animations[j][0];
@@ -77,39 +108,39 @@ export default class Algorithm extends Component {
   };
 
   insertionSort = () => {
-    this.disableButtons();
+    if (this.inOrder()) return;
     let arr = [...this.state.array];
     let animations = insertionSortAnimations(arr);
     this.swapAnimation(animations);
   };
 
   bubbleSort = () => {
-    this.disableButtons();
+    if (this.inOrder()) return;
     let arr = [...this.state.array];
     let animations = bubbleSortAnimations(arr);
     this.swapAnimation(animations);
   };
 
   heapSort = () => {
-    this.disableButtons();
+    if (this.inOrder()) return;
     let arr = [...this.state.array];
     let animations = heapSortAnimations(arr);
     this.swapAnimation(animations);
   };
 
   quicksort = () => {
-    this.disableButtons();
+    if (this.inOrder()) return;
     let arr = [...this.state.array];
     let animations = quickSortAnimations(arr);
     this.swapAnimation(animations);
   };
 
   mergeSort = () => {
-    this.disableButtons();
+    if (this.inOrder()) return;
     let arr = [...this.state.array];
     let animations = mergeSortAnimations(arr);
 
-    this.swapAnimation(animations, (an) => {
+    this.swapAnimation(animations, (an, t) => {
       for (let j = 0; j < an.length; j++) {
         const one = an[j][0];
         const two = an[j][1];
@@ -139,21 +170,29 @@ export default class Algorithm extends Component {
   };
 
   inputChange = (value) => {
-    let temp = value;
-    if (value < 10){
-      temp = 10;
-    }
-    else if (value > 200){
-      temp = 200;
+    if (value === ""){
+      return this.setState({arraySize: 1})
     }
 
     this.setState({
-      arraySize: temp
+      arraySize: value
     })
-
-    this.generateArray()
   }
 
+  inOrder = () => {
+    var temp = [...this.state.array];
+
+    for (let i = 0; i < temp.length - 1; i++) {
+      let current = temp[i];
+      let next = temp[i + 1];
+
+      if (current > next){
+        return false;
+      }
+    }
+
+    return true;
+  }
   render() {
     return (
       <div className="mainContainer">
@@ -221,6 +260,7 @@ export default class Algorithm extends Component {
             variant="outline-dark"
             onClick={() => this.generateArray()}
             style={{ marginRight: 10, marginTop: 20}}
+            disabled={this.state.buttonsEnabled}
           >
             Generate Array
           </Button>
