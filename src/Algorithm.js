@@ -11,14 +11,14 @@ import {
   ANIMATION_TYPE,
 } from "./Animations";
 
-const ANIMATION_SPEED = 3;
-
 export default class Algorithm extends Component {
   state = {
     array: [],
     arraySize: 50,
     buttonsEnabled: false,
-    timeouts: []
+    timeouts: [],
+    animationSpeed: 5,
+    tempSpeed: 5
   };
 
   componentDidMount() {
@@ -28,16 +28,15 @@ export default class Algorithm extends Component {
   disableButtons = (val) => {
     this.setState({ buttonsEnabled: true });
 
-    if(val > 0){
+    if (val > 0) {
       new Promise((res, rej) => {
         setTimeout(() => {
-          res()
+          res();
         }, val);
-      })
-      .then(() => {
+      }).then(() => {
         this.setState({ buttonsEnabled: false });
-      })
-    } 
+      });
+    }
   };
 
   randNum = () => {
@@ -48,13 +47,13 @@ export default class Algorithm extends Component {
     let temp = [];
     let arrSize = this.state.arraySize;
 
-    if(arrSize < 10) arrSize = 10;
-    else if(arrSize > 200) arrSize = 200;
+    if (arrSize < 10) arrSize = 10;
+    else if (arrSize > 200) arrSize = 200;
 
     for (let i = 0; i < arrSize; i++) {
       temp.push(this.randNum());
     }
-    
+
     this.setState({
       array: temp,
       arraySize: arrSize,
@@ -66,14 +65,14 @@ export default class Algorithm extends Component {
     var id = setTimeout(fn, interval);
     this.cleared = false;
     this.clear = function () {
-        this.cleared = true;
-        clearTimeout(id);
+      this.cleared = true;
+      clearTimeout(id);
     };
-}
+  };
 
   swapAnimation = (animations, callback = null) => {
-    let disableButtonLength = animations.length * ANIMATION_SPEED;
-    this.disableButtons(disableButtonLength)
+    let disableButtonLength = animations.length * this.state.animationSpeed;
+    this.disableButtons(disableButtonLength);
 
     if (callback === null) {
       for (let j = 0; j < animations.length; j++) {
@@ -86,7 +85,7 @@ export default class Algorithm extends Component {
             setTimeout(() => {
               bars[one].style.backgroundColor = "red";
               bars[two].style.backgroundColor = "red";
-            }, j * ANIMATION_SPEED);
+            }, j * this.state.animationSpeed);
           } else {
             setTimeout(() => {
               bars[one].style.backgroundColor = "black";
@@ -98,7 +97,7 @@ export default class Algorithm extends Component {
               new_temp[two] = swap_one;
 
               this.setState({ array: new_temp });
-            }, j * ANIMATION_SPEED);
+            }, j * this.state.animationSpeed);
           }
         }
       }
@@ -152,30 +151,52 @@ export default class Algorithm extends Component {
           setTimeout(() => {
             bars[one].style.backgroundColor = "red";
             bars[two].style.backgroundColor = "red";
-          }, j * ANIMATION_SPEED);
+          }, j * this.state.animationSpeed);
         } else if (ANIMATION_TYPE.BLACK === anType) {
           setTimeout(() => {
             bars[one].style.backgroundColor = "black";
             bars[two].style.backgroundColor = "black";
-          }, j * ANIMATION_SPEED);
+          }, j * this.state.animationSpeed);
         } else {
           setTimeout(() => {
             let new_temp = [...this.state.array];
             new_temp[one] = two;
             this.setState({ array: new_temp });
-          }, j * ANIMATION_SPEED);
+          }, j * this.state.animationSpeed);
         }
       }
     });
   };
 
-  inputChange = (value) => {
-    if (value === ""){
-      return this.setState({arraySize: 1})
+  arraySizeInputChange = (value) => {
+    if (value === "") {
+      return this.setState({ arraySize: 1 });
     }
 
     this.setState({
-      arraySize: value
+      arraySize: value,
+    });
+  };
+
+  animationInputChange = (value) => {
+    if (value === "") {
+      return this.setState({ tempSpeed: 1 });
+    }
+
+    this.setState({
+      tempSpeed: value,
+    });
+  };
+
+  animationSpeed = () => {
+    let speed = this.state.tempSpeed;
+
+    if (speed < 1) speed = 1;
+    else if (speed > 100) speed = 100;
+    
+    this.setState({
+      animationSpeed: speed,
+      tempSpeed: speed
     })
   }
 
@@ -186,85 +207,116 @@ export default class Algorithm extends Component {
       let current = temp[i];
       let next = temp[i + 1];
 
-      if (current > next){
+      if (current > next) {
         return false;
       }
     }
 
     return true;
-  }
+  };
+
   render() {
     return (
       <div className="mainContainer">
         <div className="algorithmContainer">
-          {this.state.arraySize && this.state.array.map((bar, key) => {
-            return (
-              <div
-                className="algorithmBar"
-                style={{ height: bar * 3 }}
-                key={key}
-                value={bar}
-              ></div>
-            );
-          })}
+          {this.state.arraySize &&
+            this.state.array.map((bar, key) => {
+              return (
+                <div
+                  className="algorithmBar"
+                  style={{ height: bar * 3 }}
+                  key={key}
+                  value={bar}
+                ></div>
+              );
+            })}
         </div>
-        <div className="algorithmButtons">
-          <div>
-          <Button
-            variant="outline-dark"
-            onClick={() => this.heapSort()}
-            style={{ marginRight: 10 }}
-            className="dis"
-            disabled={this.state.buttonsEnabled}
-          >
-            Heap Sort
-          </Button>
-          <Button
-            variant="outline-dark"
-            onClick={() => this.bubbleSort()}
-            style={{ marginRight: 10 }}
-            className="dis"
-            disabled={this.state.buttonsEnabled}
-          >
-            Bubble Sort
-          </Button>
-          <Button
-            variant="outline-dark"
-            onClick={() => this.insertionSort()}
-            style={{ marginRight: 10 }}
-            className="dis"
-            disabled={this.state.buttonsEnabled}
-          >
-            Insertion Sort
-          </Button>
-          <Button
-            variant="outline-dark"
-            className="dis"
-            onClick={() => this.quicksort()}
-            style={{ marginRight: 10 }}
-            disabled={this.state.buttonsEnabled}
-          >
-            Quick Sort
-          </Button>
-          <Button
-            variant="outline-dark"
-            className="dis"
-            onClick={() => this.mergeSort()}
-            disabled={this.state.buttonsEnabled}
-          >
-            Merge Sort
-          </Button>
+        <div>
+          <div className="button-spacing">
+            <div>
+            <Button
+              variant="outline-dark algorithmButtons"
+              onClick={() => this.generateArray()}
+              style={{ marginRight: 10, marginTop: 20 }}
+              disabled={this.state.buttonsEnabled}
+            >
+              Generate Array
+            </Button>
+
+            <input
+              type="number"
+              class="btn btn-outline-dark custom-input algorithmButtons"
+              placeholder={this.state.arraySize}
+              value={this.state.arraySize}
+              onChange={(e) => this.arraySizeInputChange(e.target.value)}
+            ></input>
+            </div>
+
+            <div>
+            <Button
+              variant="outline-dark algorithmButtons"
+              onClick={() => this.animationSpeed()}
+              style={{ marginRight: 10, marginTop: 20 }}
+              disabled={this.state.buttonsEnabled}
+            >
+              Animation Speed
+            </Button>
+
+            <input
+              type="number"
+              class="btn btn-outline-dark custom-input algorithmButtons"
+              placeholder={this.state.tempSpeed}
+              value={this.state.tempSpeed}
+              onChange={(e) => this.animationInputChange(e.target.value)}
+            ></input>
+            </div>
+
           </div>
-          <div>
-          <Button
-            variant="outline-dark"
-            onClick={() => this.generateArray()}
-            style={{ marginRight: 10, marginTop: 20}}
-            disabled={this.state.buttonsEnabled}
-          >
-            Generate Array
-          </Button>
-          <input type="number" class="btn btn-outline-dark custom-input" placeholder={this.state.arraySize} value={this.state.arraySize} onChange={(e) => this.inputChange(e.target.value)}></input>
+          <div className="button-center">
+            <Button
+              variant="outline-dark algorithmButtons"
+              onClick={() => this.heapSort()}
+              style={{ marginRight: 10 }}
+              className="dis"
+              disabled={this.state.buttonsEnabled}
+            >
+              Heap Sort
+            </Button>
+            <Button
+              variant="outline-dark algorithmButtons"
+              onClick={() => this.bubbleSort()}
+              style={{ marginRight: 10 }}
+              className="dis"
+              disabled={this.state.buttonsEnabled}
+            >
+              Bubble Sort
+            </Button>
+            <Button
+              variant="outline-dark algorithmButtons"
+              onClick={() => this.insertionSort()}
+              style={{ marginRight: 10 }}
+              className="dis"
+              disabled={this.state.buttonsEnabled}
+            >
+              Insertion Sort
+            </Button>
+            <Button
+              variant="outline-dark algorithmButtons"
+              className="dis"
+              onClick={() => this.quicksort()}
+              style={{ marginRight: 10 }}
+              disabled={this.state.buttonsEnabled}
+            >
+              Quick Sort
+            </Button>
+            <Button
+              variant="outline-dark algorithmButtons"
+              className="dis"
+              onClick={() => this.mergeSort()}
+              disabled={this.state.buttonsEnabled}
+            >
+              Merge Sort
+            </Button>
           </div>
         </div>
       </div>

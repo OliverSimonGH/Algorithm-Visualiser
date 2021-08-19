@@ -22,6 +22,7 @@ html {
 
 .algorithmButtons {
   margin-top: 20px;
+  margin-right: 10px;
 }
 
 .mainContainer {
@@ -42,4 +43,19 @@ html {
   color: #212529 !important;
   background-color: #ffff !important;
 
+}
+
+input {
+  position: relative;
+}
+
+.button-spacing {
+  display: flex;
+  justify-content: space-between;
+
+}
+
+.button-center {
+  display: flex;
+  justify-content: center;
 }
