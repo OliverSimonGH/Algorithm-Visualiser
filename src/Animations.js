@@ -1,4 +1,4 @@
-const ANIMATION_TYPE = {
+export const ANIMATION_TYPE = {
   PIVOT: "PIVOT",
   SWAP: "SWAP",
   RED: "RED",
@@ -27,7 +27,7 @@ const partition = (arr, l, h) => {
   return [i, animations];
 };
 
-const insertionSortAnimations = (arr) => {
+export const insertionSortAnimations = (arr) => {
   let animations = [];
 
   for (let i = 1; i < arr.length; i++) {
@@ -46,7 +46,7 @@ const insertionSortAnimations = (arr) => {
   return animations;
 };
 
-const bubbleSortAnimations = (arr) => {
+export const bubbleSortAnimations = (arr) => {
   let animations = [];
 
   for (let i = 0; i < arr.length - 1; i++) {
@@ -63,7 +63,7 @@ const bubbleSortAnimations = (arr) => {
   return animations;
 };
 
-const heapSortAnimations = (arr) => {
+export const heapSortAnimations = (arr) => {
   let animations = [];
   let n = arr.length;
 
@@ -112,7 +112,7 @@ const heapSortAnimations = (arr) => {
   return animations;
 };
 
-const quickSortAnimations = (arr) => {
+export const quickSortAnimations = (arr) => {
   let animations = [];
   let stack = [];
 
@@ -140,7 +140,7 @@ const quickSortAnimations = (arr) => {
   return animations;
 };
 
-const mergeSortAnimations = (arr) => {
+export const mergeSortAnimations = (arr) => {
   let animations = [];
   let aux = arr.slice();
 
@@ -193,11 +193,3 @@ const merge = (arr, s, m, e, aux, animations) => {
  }
 }
 
-module.exports = {
-  insertionSortAnimations,
-  bubbleSortAnimations,
-  heapSortAnimations,
-  quickSortAnimations,
-  mergeSortAnimations,
-  ANIMATION_TYPE
-};

@@ -7,7 +7,7 @@ import {
   quickSortAnimations,
   heapSortAnimations,
   mergeSortAnimations,
-  ANIMATION_TYPE,
+  ANIMATION_TYPE
 } from "./Animations";
 
 export default class Algorithm extends Component {
