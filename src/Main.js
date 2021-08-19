@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Navbar, Container, Nav} from "react-bootstrap"
 
 import Algorithm from "./Algorithm";
+import PathFinding from "./PathFinding/PathFinding";
 
 const ALGORITHMS = {
   "SORTING": "Sorting",
@@ -14,7 +15,7 @@ export default class Main extends Component {
         ALGORITHMS.SORTING,
         ALGORITHMS.PATH_FINDING
     ],
-    selectedAlgorithm: ALGORITHMS.SORTING
+    selectedAlgorithm: ALGORITHMS.PATH_FINDING
   };
 
   selectAlgorithm = (algo) => {
@@ -37,7 +38,7 @@ export default class Main extends Component {
           </Container>
         </Navbar>
         {this.state.selectedAlgorithm === ALGORITHMS.SORTING && <Algorithm></Algorithm>}
-        {this.state.selectedAlgorithm === ALGORITHMS.PATH_FINDING && <div></div>}
+        {this.state.selectedAlgorithm === ALGORITHMS.PATH_FINDING && <PathFinding></PathFinding>}
       </React.Fragment>
     );
   }

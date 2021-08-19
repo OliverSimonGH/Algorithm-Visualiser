@@ -34,6 +34,7 @@ html {
   display: flex;
   width:var(--width, --width--algobar);
   margin: auto;
+  height: auto;
   margin-top: 100px;
   justify-content: center;
   flex-direction: column;
@@ -114,4 +115,38 @@ input {
 
 .algorithmButtons:last-of-type {
   margin-right: 0px;
+}
+
+.pt-container {
+  width: 80%;
+  position: relative;
+  height: auto;
+  width: auto;
+  margin: 0 auto;
+}
+
+.pt-block {
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  border: 1px solid black;
+}
+
+.ow {
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+  margin-top: 100px;
+}
+
+.pt-end, .pt-start {
+  border-width: medium;
+}
+
+.pt-end {
+  background-color: red;
+}
+
+.pt-start {
+  background-color: green;
 }
