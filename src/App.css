@@ -1,3 +1,8 @@
+:root {
+  --width: 800px;
+  --width--algobar: 30px;
+}
+
 html {
   margin: 0;
   padding: 0;
@@ -6,7 +11,7 @@ html {
 .algorithmContainer {
   display: flex;
   height: 300px;
-  width: 800px;
+  width:var(--width);
   text-align: center;
   /* border: 1px solid black; */
 }
@@ -14,7 +19,7 @@ html {
 .algorithmBar {
   display: inline;
   background-color: black;
-  width: 30px;
+  width:var(--width--algobar);
   height: 250px;
   align-self: flex-end;
   margin: 0px 0.5px
@@ -27,7 +32,7 @@ html {
 
 .mainContainer {
   display: flex;
-  width: 830px;
+  width:var(--width, --width--algobar);
   margin: auto;
   margin-top: 100px;
   justify-content: center;
@@ -101,4 +106,8 @@ input {
 
 .measure-sidebar-layout{
   position: absolute;
+}
+
+.buttons{
+  width:var(--width);
 }

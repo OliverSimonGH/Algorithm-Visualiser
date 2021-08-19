@@ -218,7 +218,7 @@ export default class Algorithm extends Component {
   render() {
     let measure = [];
     for (let i = 0; i <= 20; i++) {
-      measure.push(<div className="measure-sidebar-layout" style={{top: `${((20 - i) * 5) * 0.99}%`, bottom: 100}}><div className="measure-sidebar"></div><div className="measure-sidebarnum">{i * 5}</div></div>)
+      measure.push(<div className="measure-sidebar-layout" style={{top: `calc(${((20 - i) * 5)}% - 3px)`}}><div className="measure-sidebar"></div><div className="measure-sidebarnum">{i * 5}</div></div>)
     }
 
     return (
@@ -245,7 +245,7 @@ export default class Algorithm extends Component {
           </div>
         </div>
         </div>
-        <div>
+        <div className="buttons">
           <div className="button-spacing">
             <div>
             <Button
