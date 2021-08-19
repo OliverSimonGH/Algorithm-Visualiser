@@ -5,7 +5,7 @@ import Algorithm from "./Algorithm";
 
 const ALGORITHMS = {
   "SORTING": "Sorting",
-  "PATH_FINDING": "Path Fidning"
+  "PATH_FINDING": "Path Finding"
 }
 
 export default class Main extends Component {
