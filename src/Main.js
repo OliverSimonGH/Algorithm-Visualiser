@@ -3,13 +3,18 @@ import { Navbar, Container, Nav} from "react-bootstrap"
 
 import Algorithm from "./Algorithm";
 
+const ALGORITHMS = {
+  "SORTING": "Sorting",
+  "PATH_FINDING": "Path Fidning"
+}
+
 export default class Main extends Component {
   state = {
     alogirthms: [
-        "Sorting",
-        "Path Finding"
+        ALGORITHMS.SORTING,
+        ALGORITHMS.PATH_FINDING
     ],
-    selectedAlgorithm: null
+    selectedAlgorithm: ALGORITHMS.SORTING
   };
 
   selectAlgorithm = (algo) => {
@@ -31,8 +36,10 @@ export default class Main extends Component {
             </Nav>
           </Container>
         </Navbar>
-        <Algorithm selectedAlgorithm={this.state.selectedAlgorithm}></Algorithm>
+        {this.state.selectedAlgorithm === ALGORITHMS.SORTING && <Algorithm></Algorithm>}
+        {this.state.selectedAlgorithm === ALGORITHMS.PATH_FINDING && <div></div>}
       </React.Fragment>
     );
   }
 }
+

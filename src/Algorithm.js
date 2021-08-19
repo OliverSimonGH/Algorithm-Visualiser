@@ -1,4 +1,3 @@
-import { resolve } from "q";
 import React, { Component } from "react";
 import { Button } from "react-bootstrap";
 
@@ -61,13 +60,51 @@ export default class Algorithm extends Component {
     });
   };
 
-  timeout = (fn, interval) => {
-    var id = setTimeout(fn, interval);
-    this.cleared = false;
-    this.clear = function () {
-      this.cleared = true;
-      clearTimeout(id);
-    };
+  arraySizeInputChange = (value) => {
+    if (value === "") {
+      return this.setState({ arraySize: 1 });
+    }
+
+    this.setState({
+      arraySize: value,
+    });
+  };
+
+  animationInputChange = (value) => {
+    if (value === "") {
+      return this.setState({ tempSpeed: 1 });
+    }
+
+    this.setState({
+      tempSpeed: value,
+    });
+  };
+
+  animationSpeed = () => {
+    let speed = this.state.tempSpeed;
+
+    if (speed < 1) speed = 1;
+    else if (speed > 100) speed = 100;
+    
+    this.setState({
+      animationSpeed: speed,
+      tempSpeed: speed
+    })
+  }
+
+  inOrder = () => {
+    var temp = [...this.state.array];
+
+    for (let i = 0; i < temp.length - 1; i++) {
+      let current = temp[i];
+      let next = temp[i + 1];
+
+      if (current > next) {
+        return false;
+      }
+    }
+
+    return true;
   };
 
   swapAnimation = (animations, callback = null) => {
@@ -88,6 +125,7 @@ export default class Algorithm extends Component {
             }, j * this.state.animationSpeed);
           } else {
             setTimeout(() => {
+              console.log(one, two)
               bars[one].style.backgroundColor = "black";
               bars[two].style.backgroundColor = "black";
 
@@ -134,6 +172,7 @@ export default class Algorithm extends Component {
     this.swapAnimation(animations);
   };
 
+
   mergeSort = () => {
     if (this.inOrder()) return;
     let arr = [...this.state.array];
@@ -166,53 +205,6 @@ export default class Algorithm extends Component {
         }
       }
     });
-  };
-
-  arraySizeInputChange = (value) => {
-    if (value === "") {
-      return this.setState({ arraySize: 1 });
-    }
-
-    this.setState({
-      arraySize: value,
-    });
-  };
-
-  animationInputChange = (value) => {
-    if (value === "") {
-      return this.setState({ tempSpeed: 1 });
-    }
-
-    this.setState({
-      tempSpeed: value,
-    });
-  };
-
-  animationSpeed = () => {
-    let speed = this.state.tempSpeed;
-
-    if (speed < 1) speed = 1;
-    else if (speed > 100) speed = 100;
-    
-    this.setState({
-      animationSpeed: speed,
-      tempSpeed: speed
-    })
-  }
-
-  inOrder = () => {
-    var temp = [...this.state.array];
-
-    for (let i = 0; i < temp.length - 1; i++) {
-      let current = temp[i];
-      let next = temp[i + 1];
-
-      if (current > next) {
-        return false;
-      }
-    }
-
-    return true;
   };
 
   render() {
