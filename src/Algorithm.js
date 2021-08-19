@@ -216,8 +216,14 @@ export default class Algorithm extends Component {
   };
 
   render() {
+    let measure = [];
+    for (let i = 0; i <= 20; i++) {
+      measure.push(<div className="measure-sidebar-layout" style={{top: `${((20 - i) * 5) * 0.99}%`, bottom: 100}}><div className="measure-sidebar"></div><div className="measure-sidebarnum">{i * 5}</div></div>)
+    }
+
     return (
       <div className="mainContainer">
+        <div className="ac">
         <div className="algorithmContainer">
           {this.state.arraySize &&
             this.state.array.map((bar, key) => {
@@ -230,6 +236,14 @@ export default class Algorithm extends Component {
                 ></div>
               );
             })}
+        </div>
+        <div className="measure">
+          <div className="measure-bar">
+            {measure.length && measure.map((value) => {
+              return value
+            })}
+          </div>
+        </div>
         </div>
         <div>
           <div className="button-spacing">
